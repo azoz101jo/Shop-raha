@@ -291,14 +291,19 @@
             <button class="close-modal" onclick="closeModal('sale-modal')">✕</button>
             <h3 class="modal-header">إضافة معروض جديد</h3>
             
-            <label>صور المنتج (المربع الأول هو الصورة الأساسية)</label>
+            <label>صور المنتج (اضغط لفتح المعرض مباشرة)</label>
             <div class="image-boxes-container">
-                <div class="image-box" onclick="getImgUrl(1)" id="box-1">
+                <input type="file" id="file-1" accept="image/*" style="display:none" onchange="handleFileSelect(event, 1)">
+                <input type="file" id="file-2" accept="image/*" style="display:none" onchange="handleFileSelect(event, 2)">
+                <input type="file" id="file-3" accept="image/*" style="display:none" onchange="handleFileSelect(event, 3)">
+                <input type="file" id="file-4" accept="image/*" style="display:none" onchange="handleFileSelect(event, 4)">
+
+                <div class="image-box" onclick="document.getElementById('file-1').click()" id="box-1">
                     <span id="plus-1">+</span><div class="label-tag">أساسية</div>
                 </div>
-                <div class="image-box" onclick="getImgUrl(2)" id="box-2"><span id="plus-2">+</span></div>
-                <div class="image-box" onclick="getImgUrl(3)" id="box-3"><span id="plus-3">+</span></div>
-                <div class="image-box" onclick="getImgUrl(4)" id="box-4"><span id="plus-4">+</span></div>
+                <div class="image-box" onclick="document.getElementById('file-2').click()" id="box-2"><span id="plus-2">+</span></div>
+                <div class="image-box" onclick="document.getElementById('file-3').click()" id="box-3"><span id="plus-3">+</span></div>
+                <div class="image-box" onclick="document.getElementById('file-4').click()" id="box-4"><span id="plus-4">+</span></div>
             </div>
 
             <label>الوصف</label>
@@ -310,7 +315,7 @@
             <label>السعر</label>
             <input type="text" id="prod-price" placeholder="السعر...">
 
-            <button class="btn-submit" onclick="publishProduct()">نشر</button>
+            <button class="btn-submit" id="submit-btn" onclick="publishProduct()">نشر</button>
         </div>
     </div>
 
@@ -338,7 +343,7 @@
         import { getAuth, signInWithPopup, GoogleAuthProvider, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
         import { getDatabase, ref, push, onValue } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
 
-        // إعدادات Firebase الخاصة بك مع تصحيح خادم قاعدة البيانات الإقليمي لتجنب أخطاء الاتصال بالدخول
+        // إعدادات Firebase الخاصة بك كما هي في كودك الأساسي
         const firebaseConfig = {
             apiKey: "AIzaSyDeI33ZDVkB6jA7_E0xAX-22HuL04iTm6I",
             authDomain: "shop-7afd7.firebaseapp.com",
@@ -355,7 +360,7 @@
         const db = getDatabase(app);
         const provider = new GoogleAuthProvider();
 
-        let uploadedImages = ["https://placehold.co/300x200/3d352b/dfb76c?text=No+Image", "", "", ""];
+        let base64Images = ["https://placehold.co/300x200/3d352b/dfb76c?text=No+Image", "", "", ""];
 
         onAuthStateChanged(auth, (user) => {
             if (user) {
@@ -369,38 +374,45 @@
         });
 
         window.loginWithGoogle = function() {
-            signInWithPopup(auth, provider).catch(err => {
-                alert("تنبيه: تأكد من إضافة رابط موقعك الحالي في Authorized Domains داخل الـ Firebase لإتمام الدخول: " + err.message);
-            });
+            signInWithPopup(auth, provider).catch(err => alert("خطأ بالدخول: " + err.message));
         };
 
         window.openSaleModal = function() { 
-            uploadedImages = ["https://placehold.co/300x200/3d352b/dfb76c?text=No+Image", "", "", ""];
+            base64Images = ["https://placehold.co/300x200/3d352b/dfb76c?text=No+Image", "", "", ""];
             for(let i=1; i<=4; i++) {
                 let imgHtml = document.getElementById("box-"+i).querySelector("img");
                 if(imgHtml) imgHtml.remove();
                 document.getElementById("plus-"+i).style.display = "block";
+                document.getElementById("file-"+i).value = "";
             }
             document.getElementById("prod-desc").value = "";
             document.getElementById("prod-contact").value = "";
             document.getElementById("prod-price").value = "";
+            document.getElementById("submit-btn").disabled = false;
+            document.getElementById("submit-btn").innerText = "نشر";
             document.getElementById("sale-modal").style.display = "flex"; 
         };
         window.closeModal = function(id) { document.getElementById(id).style.display = "none"; };
 
-        window.getImgUrl = function(num) {
-            let url = prompt("أدخل رابط صورة المنتج للمربع رقم " + num + ":");
-            if(url && url.trim() !== "") {
-                uploadedImages[num-1] = url;
-                let box = document.getElementById("box-"+num);
-                document.getElementById("plus-"+num).style.display = "none";
-                
-                let oldImg = box.querySelector("img");
-                if(oldImg) oldImg.remove();
+        // عند اختيار صورة، يتم تحويلها تلقائياً إلى كود وعرض معاينتها فوراً
+        window.handleFileSelect = function(event, num) {
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    base64Images[num-1] = e.target.result; // تخزين الصورة كـ Base64 لرفعها وحفظها بالداتابيز مباشرة
+                    
+                    let box = document.getElementById("box-"+num);
+                    document.getElementById("plus-"+num).style.display = "none";
+                    
+                    let oldImg = box.querySelector("img");
+                    if(oldImg) oldImg.remove();
 
-                let img = document.createElement("img");
-                img.src = url;
-                box.appendChild(img);
+                    let img = document.createElement("img");
+                    img.src = e.target.result;
+                    box.appendChild(img);
+                };
+                reader.readAsDataURL(file);
             }
         };
 
@@ -414,9 +426,13 @@
                 return;
             }
 
+            const btn = document.getElementById("submit-btn");
+            btn.disabled = true;
+            btn.innerText = "جاري النشر المعروض...";
+
             push(ref(db, 'products'), {
-                mainImage: uploadedImages[0],
-                allImages: uploadedImages.filter(img => img !== ""),
+                mainImage: base64Images[0],
+                allImages: base64Images.filter(img => img !== ""),
                 description: desc,
                 contactMethod: contact,
                 price: price,
@@ -424,7 +440,11 @@
             }).then(() => {
                 alert("تم النشر بنجاح ويظهر للجميع الآن!");
                 closeModal('sale-modal');
-            }).catch(err => alert("حدث خطأ أثناء النشر: " + err.message));
+            }).catch(err => {
+                alert("حدث خطأ أثناء النشر: " + err.message);
+                btn.disabled = false;
+                btn.innerText = "نشر";
+            });
         };
 
         function listenToProducts() {
