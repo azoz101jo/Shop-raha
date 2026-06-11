@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>تسوق براحه</title>
     <style>
-        /* تصميم حجري قديم وفخم يناسب ذوقك */
         :root {
             --stone-bg: #2c251e;
             --stone-card: #3d352b;
@@ -38,7 +37,6 @@
             text-shadow: 2px 2px 4px #000;
         }
 
-        /* شاشة تسجيل الدخول */
         #auth-screen {
             display: flex;
             flex-direction: column;
@@ -76,13 +74,11 @@
             box-shadow: 0 4px 6px rgba(0,0,0,0.3);
         }
 
-        /* الشاشة الرئيسية للمتجر */
         #main-screen {
             display: none;
             padding: 20px;
         }
 
-        /* زر إضافة بيع (+) في الزاوية */
         .add-sale-btn {
             position: fixed;
             bottom: 20px;
@@ -102,7 +98,6 @@
             z-index: 99;
         }
 
-        /* شبكة عرض المنتجات */
         .products-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
@@ -152,7 +147,6 @@
             width: 100%;
         }
 
-        /* الواجهات المنبثقة */
         .modal {
             display: none;
             position: fixed;
@@ -182,7 +176,6 @@
             padding-bottom: 10px;
         }
 
-        /* 4 مربعات رفع الصور */
         .image-boxes-container {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
@@ -291,7 +284,7 @@
             <button class="close-modal" onclick="closeModal('sale-modal')">✕</button>
             <h3 class="modal-header">إضافة معروض جديد</h3>
             
-            <label>صور المنتج (اضغط لفتح المعرض مباشرة)</label>
+            <label>صور المنتج (يجب اختيار 4 صور من الاستوديو)</label>
             <div class="image-boxes-container">
                 <input type="file" id="file-1" accept="image/*" style="display:none" onchange="handleFileSelect(event, 1)">
                 <input type="file" id="file-2" accept="image/*" style="display:none" onchange="handleFileSelect(event, 2)">
@@ -359,8 +352,8 @@
         const db = getDatabase(app);
         const provider = new GoogleAuthProvider();
 
-        // روابط صور افتراضية سريعة وخفيفة جداً لمنع تعليق النشر
-        let finalImages = ["https://picsum.photos/300/200?random=1", "", "", ""];
+        // تبدأ المصفوفة فارغة تماماً لضمان عدم وجود صور عشوائية
+        let currentProductImages = ["", "", "", ""];
 
         onAuthStateChanged(auth, (user) => {
             if (user) {
@@ -378,7 +371,7 @@
         };
 
         window.openSaleModal = function() { 
-            finalImages = ["https://picsum.photos/300/200?random=1", "", "", ""];
+            currentProductImages = ["", "", "", ""];
             for(let i=1; i<=4; i++) {
                 let imgHtml = document.getElementById("box-"+i).querySelector("img");
                 if(imgHtml) imgHtml.remove();
@@ -392,64 +385,86 @@
             document.getElementById("submit-btn").innerText = "نشر";
             document.getElementById("sale-modal").style.display = "flex"; 
         };
+
         window.closeModal = function(id) { document.getElementById(id).style.display = "none"; };
 
-        // يفتح معرض الجوال ويعرض الصورة مباشرة عندك للمعاينة
+        // دالة معالجة الصور وضغطها لرفع فوري بدون تعليق
         window.handleFileSelect = function(event, num) {
             const file = event.target.files[0];
             if (file) {
                 const reader = new FileReader();
                 reader.onload = function(e) {
-                    let box = document.getElementById("box-"+num);
-                    document.getElementById("plus-"+num).style.display = "none";
-                    
-                    let oldImg = box.querySelector("img");
-                    if(oldImg) oldImg.remove();
+                    const imgElement = new Image();
+                    imgElement.src = e.target.result;
+                    imgElement.onload = function() {
+                        // ضغط الصورة تلقائياً لتصبح خفيفة جداً ومناسبة لقاعدة البيانات الفورية
+                        const canvas = document.createElement('canvas');
+                        const ctx = canvas.getContext('2d');
+                        const max_width = 400; 
+                        const scaleFactor = max_width / imgElement.width;
+                        canvas.width = max_width;
+                        canvas.height = imgElement.height * scaleFactor;
+                        
+                        ctx.drawImage(imgElement, 0, 0, canvas.width, canvas.height);
+                        const compressedBase64 = canvas.toDataURL('image/jpeg', 0.6); // ضغط بجودة 60% ليصبح الرفع فائق السرعة
 
-                    let img = document.createElement("img");
-                    img.src = e.target.result;
-                    box.appendChild(img);
+                        let box = document.getElementById("box-"+num);
+                        document.getElementById("plus-"+num).style.display = "none";
+                        
+                        let oldImg = box.querySelector("img");
+                        if(oldImg) oldImg.remove();
 
-                    // نولد رابط عشوائي وسريع جداً لقاعدة البيانات لضمان النشر الفوري بلمحة بصر
-                    finalImages[num-1] = "https://picsum.photos/300/200?random=" + Math.floor(Math.random() * 1000);
+                        let img = document.createElement("img");
+                        img.src = compressedBase64;
+                        box.appendChild(img);
+
+                        // حفظ كود الصورة المضغوطة الحقيقية في المصفوفة
+                        currentProductImages[num-1] = compressedBase64;
+                    };
                 };
                 reader.readAsDataURL(file);
             }
         };
 
-        // زر النشر الفوري، الحين صار يرفع بلمحة بصر وبدون أي ثانية تأخير!
+        // دالة النشر الإجبارية - تمنع النشر إذا لم يتم اختيار الأربع صور بالكامل
         window.publishProduct = function() {
             const desc = document.getElementById("prod-desc").value;
             const contact = document.getElementById("prod-contact").value;
             const price = document.getElementById("prod-price").value;
 
+            // شرط إجباري: فحص ما إذا كانت هناك أي خانة صورة فارغة
+            if (currentProductImages.includes("")) {
+                alert("الرجاء تعبئة جميع الصور الـ 4 المطلوبة للمنتج!");
+                return;
+            }
+
             if(!desc || !contact || !price) {
-                alert("الرجاء إضافة الوصف، طريقة التواصل، والسعر!");
+                alert("الرجاء تعبئة الوصف، طريقة التواصل، والسعر!");
                 return;
             }
 
             const btn = document.getElementById("submit-btn");
             btn.disabled = true;
-            btn.innerText = "جاري النشر فوراً...";
+            btn.innerText = "جاري النشر الفوري...";
 
-            push(ref(db, 'products'), {
-                mainImage: finalImages[0],
-                allImages: finalImages.filter(img => img !== ""),
+            const productsRef = ref(db, 'products');
+            push(productsRef, {
+                mainImage: currentProductImages[0],
+                allImages: currentProductImages,
                 description: desc,
                 contactMethod: contact,
                 price: price,
                 timestamp: Date.now()
             }).then(() => {
-                alert("تم النشر بنجاح وظهر للجميع الآن!");
+                alert("تم نشر منتجك بنجاح وبأقل من ثانية!");
                 closeModal('sale-modal');
             }).catch(err => {
-                alert("حدث خطأ أثناء النشر: " + err.message);
+                alert("خطأ بالنشر: " + err.message);
                 btn.disabled = false;
                 btn.innerText = "نشر";
             });
         };
 
-        // جلب المنتجات وعرضها، وإصلاح كود زر الشراء ليفتح الواجهة فوراً ببياناتها
         function listenToProducts() {
             onValue(ref(db, 'products'), (snapshot) => {
                 const container = document.getElementById("products-container");
@@ -467,22 +482,21 @@
                     card.className = "product-card";
                     card.innerHTML = `
                         <img src="${prod.mainImage}">
-                        <h3>${prod.description.substring(0, 20)}...</h3>
-                        <div class="price">${prod.price}</div>
+                        <h3>${(prod.description || '').substring(0, 20)}...</h3>
+                        <div class="price">${prod.price || '0'}</div>
                         <button class="btn-buy" id="btn-${key}">شراء</button>
                     `;
                     container.appendChild(card);
 
-                    // تصليح كود فتح واجهة الشراء عند الضغط
                     document.getElementById(`btn-${key}`).addEventListener("click", () => {
-                        document.getElementById("buy-desc").innerText = prod.description;
-                        document.getElementById("buy-price").innerText = prod.price;
-                        document.getElementById("buy-contact").innerText = prod.contactMethod;
+                        document.getElementById("buy-desc").innerText = prod.description || '';
+                        document.getElementById("buy-price").innerText = prod.price || '';
+                        document.getElementById("buy-contact").innerText = prod.contactMethod || '';
 
                         const slider = document.getElementById("buy-images-container");
                         slider.innerHTML = "";
                         
-                        if(prod.allImages) {
+                        if(prod.allImages && Array.isArray(prod.allImages)) {
                             prod.allImages.forEach(imgUrl => {
                                 if(imgUrl) {
                                     const img = document.createElement("img");
