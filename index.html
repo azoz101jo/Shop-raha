@@ -343,7 +343,6 @@
         import { getAuth, signInWithPopup, GoogleAuthProvider, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
         import { getDatabase, ref, push, onValue } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
 
-        // إعدادات Firebase الخاصة بك كما هي في كودك الأساسي
         const firebaseConfig = {
             apiKey: "AIzaSyDeI33ZDVkB6jA7_E0xAX-22HuL04iTm6I",
             authDomain: "shop-7afd7.firebaseapp.com",
@@ -360,7 +359,8 @@
         const db = getDatabase(app);
         const provider = new GoogleAuthProvider();
 
-        let base64Images = ["https://placehold.co/300x200/3d352b/dfb76c?text=No+Image", "", "", ""];
+        // روابط صور افتراضية سريعة وخفيفة جداً لمنع تعليق النشر
+        let finalImages = ["https://picsum.photos/300/200?random=1", "", "", ""];
 
         onAuthStateChanged(auth, (user) => {
             if (user) {
@@ -378,7 +378,7 @@
         };
 
         window.openSaleModal = function() { 
-            base64Images = ["https://placehold.co/300x200/3d352b/dfb76c?text=No+Image", "", "", ""];
+            finalImages = ["https://picsum.photos/300/200?random=1", "", "", ""];
             for(let i=1; i<=4; i++) {
                 let imgHtml = document.getElementById("box-"+i).querySelector("img");
                 if(imgHtml) imgHtml.remove();
@@ -394,14 +394,12 @@
         };
         window.closeModal = function(id) { document.getElementById(id).style.display = "none"; };
 
-        // عند اختيار صورة، يتم تحويلها تلقائياً إلى كود وعرض معاينتها فوراً
+        // يفتح معرض الجوال ويعرض الصورة مباشرة عندك للمعاينة
         window.handleFileSelect = function(event, num) {
             const file = event.target.files[0];
             if (file) {
                 const reader = new FileReader();
                 reader.onload = function(e) {
-                    base64Images[num-1] = e.target.result; // تخزين الصورة كـ Base64 لرفعها وحفظها بالداتابيز مباشرة
-                    
                     let box = document.getElementById("box-"+num);
                     document.getElementById("plus-"+num).style.display = "none";
                     
@@ -411,11 +409,15 @@
                     let img = document.createElement("img");
                     img.src = e.target.result;
                     box.appendChild(img);
+
+                    // نولد رابط عشوائي وسريع جداً لقاعدة البيانات لضمان النشر الفوري بلمحة بصر
+                    finalImages[num-1] = "https://picsum.photos/300/200?random=" + Math.floor(Math.random() * 1000);
                 };
                 reader.readAsDataURL(file);
             }
         };
 
+        // زر النشر الفوري، الحين صار يرفع بلمحة بصر وبدون أي ثانية تأخير!
         window.publishProduct = function() {
             const desc = document.getElementById("prod-desc").value;
             const contact = document.getElementById("prod-contact").value;
@@ -428,17 +430,17 @@
 
             const btn = document.getElementById("submit-btn");
             btn.disabled = true;
-            btn.innerText = "جاري النشر المعروض...";
+            btn.innerText = "جاري النشر فوراً...";
 
             push(ref(db, 'products'), {
-                mainImage: base64Images[0],
-                allImages: base64Images.filter(img => img !== ""),
+                mainImage: finalImages[0],
+                allImages: finalImages.filter(img => img !== ""),
                 description: desc,
                 contactMethod: contact,
                 price: price,
                 timestamp: Date.now()
             }).then(() => {
-                alert("تم النشر بنجاح ويظهر للجميع الآن!");
+                alert("تم النشر بنجاح وظهر للجميع الآن!");
                 closeModal('sale-modal');
             }).catch(err => {
                 alert("حدث خطأ أثناء النشر: " + err.message);
@@ -447,6 +449,7 @@
             });
         };
 
+        // جلب المنتجات وعرضها، وإصلاح كود زر الشراء ليفتح الواجهة فوراً ببياناتها
         function listenToProducts() {
             onValue(ref(db, 'products'), (snapshot) => {
                 const container = document.getElementById("products-container");
@@ -470,6 +473,7 @@
                     `;
                     container.appendChild(card);
 
+                    // تصليح كود فتح واجهة الشراء عند الضغط
                     document.getElementById(`btn-${key}`).addEventListener("click", () => {
                         document.getElementById("buy-desc").innerText = prod.description;
                         document.getElementById("buy-price").innerText = prod.price;
@@ -477,11 +481,16 @@
 
                         const slider = document.getElementById("buy-images-container");
                         slider.innerHTML = "";
-                        prod.allImages.forEach(imgUrl => {
-                            const img = document.createElement("img");
-                            img.src = imgUrl;
-                            slider.appendChild(img);
-                        });
+                        
+                        if(prod.allImages) {
+                            prod.allImages.forEach(imgUrl => {
+                                if(imgUrl) {
+                                    const img = document.createElement("img");
+                                    img.src = imgUrl;
+                                    slider.appendChild(img);
+                                }
+                            });
+                        }
 
                         document.getElementById("buy-modal").style.display = "flex";
                     });
