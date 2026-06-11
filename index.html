@@ -15,140 +15,60 @@
         }
         body {
             font-family: 'Segoe UI', Tahoma, sans-serif;
-            background-color: var(--stone-bg);
-            color: var(--white-text);
-            margin: 0; padding: 0;
+            background-color: var(--stone-bg); color: var(--white-text); margin: 0; padding: 0;
             background-image: url('https://www.transparenttextures.com/patterns/dark-brick-wall.png');
         }
         header {
-            background-color: var(--stone-card);
-            border-bottom: 4px solid var(--stone-border);
-            padding: 15px; text-align: center;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.5);
+            background-color: var(--stone-card); border-bottom: 4px solid var(--stone-border);
+            padding: 15px; text-align: center; box-shadow: 0 4px 10px rgba(0,0,0,0.5);
         }
-        header h1 {
-            color: var(--gold-text); margin: 0;
-            font-size: 26px; text-shadow: 2px 2px 4px #000;
-        }
-        #auth-screen {
-            display: flex; flex-direction: column;
-            justify-content: center; align-items: center;
-            height: 80vh; text-align: center;
-        }
-        .stone-panel {
-            background-color: var(--stone-card);
-            border: 3px solid var(--stone-border);
-            border-radius: 8px; padding: 30px;
-            box-shadow: 0 0 15px rgba(0,0,0,0.7);
-            max-width: 340px; width: 90%;
-        }
+        header h1 { color: var(--gold-text); margin: 0; font-size: 26px; text-shadow: 2px 2px 4px #000; }
+        #auth-screen { display: flex; flex-direction: column; justify-content: center; align-items: center; height: 80vh; text-align: center; }
+        .stone-panel { background-color: var(--stone-card); border: 3px solid var(--stone-border); border-radius: 8px; padding: 30px; box-shadow: 0 0 15px rgba(0,0,0,0.7); max-width: 340px; width: 90%; }
         .btn-google {
-            background-color: #ffffff; color: #000; border: none;
-            padding: 14px 20px; font-size: 16px; font-weight: bold;
-            border-radius: 5px; cursor: pointer;
-            display: flex; align-items: center; justify-content: center;
-            gap: 10px; width: 100%; margin-top: 20px;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.3);
+            background-color: #ffffff; color: #000; border: none; padding: 14px 20px; font-size: 16px; font-weight: bold;
+            border-radius: 5px; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 10px; width: 100%; margin-top: 20px; box-shadow: 0 4px 6px rgba(0,0,0,0.3);
         }
-        #main-screen {
-            display: none; padding: 20px;
-        }
+        #main-screen { display: none; padding: 20px; }
         .add-sale-btn {
-            position: fixed; bottom: 20px; left: 20px;
-            background-color: var(--stone-border); color: var(--gold-text);
-            border: 2px solid var(--gold-text); padding: 12px 20px;
-            border-radius: 50px; font-size: 16px; font-weight: bold;
-            cursor: pointer; box-shadow: 0 4px 10px rgba(0,0,0,0.5);
-            display: flex; align-items: center; gap: 8px; z-index: 99;
+            position: fixed; bottom: 20px; left: 20px; background-color: var(--stone-border); color: var(--gold-text);
+            border: 2px solid var(--gold-text); padding: 12px 20px; border-radius: 50px; font-size: 16px; font-weight: bold;
+            cursor: pointer; box-shadow: 0 4px 10px rgba(0,0,0,0.5); display: flex; align-items: center; gap: 8px; z-index: 99;
         }
-        .products-grid {
-            display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
-            gap: 15px; margin-top: 20px;
-        }
-        .product-card {
-            background-color: var(--stone-card); border: 2px solid var(--stone-border);
-            border-radius: 6px; padding: 10px; text-align: center;
-            box-shadow: 0 4px 8px rgba(0,0,0,0.4);
-        }
-        .product-card img {
-            width: 100%; height: 120px; object-fit: cover;
-            border-radius: 4px; border: 1px solid var(--stone-border);
-        }
-        .product-card h3 {
-            margin: 10px 0 5px 0; font-size: 16px; color: var(--gold-text);
-            white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
-        }
-        .product-card .price {
-            color: #5af; font-weight: bold; margin-bottom: 10px;
-        }
-        .btn-buy {
-            background-color: var(--stone-border); color: var(--white-text);
-            border: 1px solid var(--gold-text); padding: 6px 12px;
-            border-radius: 4px; cursor: pointer; width: 100%;
-        }
+        .products-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 15px; margin-top: 20px; }
+        .product-card { background-color: var(--stone-card); border: 2px solid var(--stone-border); border-radius: 6px; padding: 10px; text-align: center; box-shadow: 0 4px 8px rgba(0,0,0,0.4); }
+        .product-card img { width: 100%; height: 120px; object-fit: cover; border-radius: 4px; border: 1px solid var(--stone-border); }
+        .product-card h3 { margin: 10px 0 5px 0; font-size: 16px; color: var(--gold-text); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .product-card .price { color: #5af; font-weight: bold; margin-bottom: 10px; }
+        .btn-buy { background-color: var(--stone-border); color: var(--white-text); border: 1px solid var(--gold-text); padding: 6px 12px; border-radius: 4px; cursor: pointer; width: 100%; }
+        
+        /* تعديل المودال لمنع الاختفاء التلقائي عند اللمس */
         .modal {
             display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background-color: rgba(0,0,0,0.8); z-index: 100;
-            justify-content: center; align-items: center;
+            background-color: rgba(0,0,0,0.85); z-index: 100; justify-content: center; align-items: center;
         }
         .modal-content {
             background-color: var(--stone-card); border: 3px solid var(--stone-border);
-            width: 90%; max-width: 360px; padding: 20px; border-radius: 8px;
-            max-height: 85vh; overflow-y: auto;
+            width: 90%; max-width: 360px; padding: 20px; border-radius: 8px; max-height: 85vh; overflow-y: auto;
+            position: relative; pointer-events: auto;
         }
-        .modal-header {
-            color: var(--gold-text); margin-top: 0; text-align: center;
-            border-bottom: 1px solid var(--stone-border); padding-bottom: 10px;
-        }
-        .image-boxes-container {
-            display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; margin: 15px 0;
-        }
-        .image-box {
-            background-color: var(--stone-bg); border: 2px dashed var(--stone-border);
-            height: 80px; display: flex; justify-content: center; align-items: center;
-            cursor: pointer; position: relative; border-radius: 4px;
-        }
-        .image-box span {
-            font-size: 24px; color: var(--stone-border);
-        }
-        .image-box img {
-            width: 100%; height: 100%; object-fit: cover; position: absolute;
-            top:0; left:0; border-radius: 4px;
-        }
-        .image-box .label-tag {
-            position: absolute; bottom: 2px; right: 2px;
-            background: rgba(0,0,0,0.7); color: #fff; font-size: 9px; padding: 1px 3px;
-        }
-        input, textarea {
-            width: 100%; background-color: var(--stone-bg); border: 1px solid var(--stone-border);
-            color: var(--white-text); padding: 10px; margin-bottom: 12px;
-            border-radius: 4px; box-sizing: border-box;
-        }
-        label {
-            display: block; color: var(--gold-text); margin-bottom: 5px; font-size: 14px;
-        }
-        .btn-submit {
-            background-color: var(--stone-border); color: var(--gold-text);
-            border: 2px solid var(--gold-text); padding: 12px; width: 100%;
-            font-weight: bold; font-size: 16px; cursor: pointer; border-radius: 4px;
-        }
-        .close-modal {
-            background: none; border: none; color: #ff5555; float: left; font-size: 20px; cursor: pointer;
-        }
-        .buy-image-slider {
-            display: flex; gap: 10px; overflow-x: auto; margin-bottom: 15px; padding-bottom: 5px;
-        }
-        .buy-image-slider img {
-            width: 100px; height: 100px; object-fit: cover; border-radius: 4px;
-            border: 1px solid var(--stone-border); flex-shrink: 0;
-        }
+        .modal-header { color: var(--gold-text); margin-top: 0; text-align: center; border-bottom: 1px solid var(--stone-border); padding-bottom: 10px; }
+        .image-boxes-container { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; margin: 15px 0; }
+        .image-box { background-color: var(--stone-bg); border: 2px dashed var(--stone-border); height: 80px; display: flex; justify-content: center; align-items: center; cursor: pointer; position: relative; border-radius: 4px; }
+        .image-box span { font-size: 24px; color: var(--stone-border); }
+        .image-box img { width: 100%; height: 100%; object-fit: cover; position: absolute; top:0; left:0; border-radius: 4px; }
+        .image-box .label-tag { position: absolute; bottom: 2px; right: 2px; background: rgba(0,0,0,0.7); color: #fff; font-size: 9px; padding: 1px 3px; }
+        input, textarea { width: 100%; background-color: var(--stone-bg); border: 1px solid var(--stone-border); color: var(--white-text); padding: 10px; margin-bottom: 12px; border-radius: 4px; box-sizing: border-box; }
+        label { display: block; color: var(--gold-text); margin-bottom: 5px; font-size: 14px; }
+        .btn-submit { background-color: var(--stone-border); color: var(--gold-text); border: 2px solid var(--gold-text); padding: 12px; width: 100%; font-weight: bold; font-size: 16px; cursor: pointer; border-radius: 4px; }
+        .close-modal { background: none; border: none; color: #ff5555; float: left; font-size: 22px; font-weight: bold; cursor: pointer; padding: 5px; }
+        .buy-image-slider { display: flex; gap: 10px; overflow-x: auto; margin-bottom: 15px; padding-bottom: 5px; }
+        .buy-image-slider img { width: 100px; height: 100px; object-fit: cover; border-radius: 4px; border: 1px solid var(--stone-border); flex-shrink: 0; }
     </style>
 </head>
 <body>
 
-    <header>
-        <h1>تسوق براحه</h1>
-    </header>
+    <header><h1>تسوق براحه</h1></header>
 
     <div id="auth-screen">
         <div class="stone-panel">
@@ -186,12 +106,9 @@
                 <div class="image-box" onclick="document.getElementById('file-3').click()" id="box-3"><span id="plus-3">+</span></div>
                 <div class="image-box" onclick="document.getElementById('file-4').click()" id="box-4"><span id="plus-4">+</span></div>
             </div>
-            <label>الوصف</label>
-            <textarea id="prod-desc" rows="3" placeholder="اكتب وصف المنتج هنا..."></textarea>
-            <label>طريقة التواصل</label>
-            <input type="text" id="prod-contact" placeholder="رقم جوال أو حساب انستقرام...">
-            <label>السعر</label>
-            <input type="text" id="prod-price" placeholder="السعر...">
+            <label>الوصف</label><textarea id="prod-desc" rows="3" placeholder="اكتب وصف المنتج هنا..."></textarea>
+            <label>طريقة التواصل</label><input type="text" id="prod-contact" placeholder="رقم جوال أو حساب انستقرام...">
+            <label>السعر</label><input type="text" id="prod-price" placeholder="السعر...">
             <button class="btn-submit" id="submit-btn" onclick="publishProduct()">نشر المنتج</button>
         </div>
     </div>
@@ -200,12 +117,9 @@
         <div class="modal-content">
             <button class="close-modal" onclick="closeModal('buy-modal')">✕</button>
             <h3 class="modal-header">تفاصيل المنتج</h3>
-            <label>جميع الصور</label>
-            <div class="buy-image-slider" id="buy-images-container"></div>
-            <label>السعر</label>
-            <div id="buy-price" style="font-size: 18px; font-weight: bold; color: #5af; margin-bottom: 15px;"></div>
-            <label>الوصف</label>
-            <p id="buy-desc" style="background: var(--stone-bg); padding: 10px; border-radius:4px; margin-bottom: 15px; font-size: 14px; white-space: pre-wrap;"></p>
+            <label>جميع الصور</label><div class="buy-image-slider" id="buy-images-container"></div>
+            <label>السعر</label><div id="buy-price" style="font-size: 18px; font-weight: bold; color: #5af; margin-bottom: 15px;"></div>
+            <label>الوصف</label><p id="buy-desc" style="background: var(--stone-bg); padding: 10px; border-radius:4px; margin-bottom: 15px; font-size: 14px; white-space: pre-wrap;"></p>
             <label>طريقة التواصل</label>
             <div id="buy-contact" style="background: var(--stone-bg); padding: 10px; border-radius:4px; color: var(--gold-text); font-weight: bold; text-align: center; border: 1px solid var(--stone-border);"></div>
         </div>
@@ -217,81 +131,56 @@
         import { getDatabase, ref, push, onValue } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
 
         const firebaseConfig = {
-            apiKey: "AIzaSyDeI33ZDVkB6jA7_E0xAX-22HuL04iTm6I",
-            authDomain: "shop-7afd7.firebaseapp.com",
-            projectId: "shop-7afd7",
-            storageBucket: "shop-7afd7.firebasestorage.app",
-            messagingSenderId: "911705458349",
-            appId: "1:911705458349:web:743560c8e4451c992ca824",
-            measurementId: "G-L88MM51GW8",
-            databaseURL: "https://shop-7afd7-default-rtdb.europe-west1.firebasedatabase.app"
+            apiKey: "AIzaSyDeI33ZDVkB6jA7_E0xAX-22HuL04iTm6I", authDomain: "shop-7afd7.firebaseapp.com",
+            projectId: "shop-7afd7", storageBucket: "shop-7afd7.firebasestorage.app",
+            messagingSenderId: "911705458349", appId: "1:911705458349:web:743560c8e4451c992ca824",
+            measurementId: "G-L88MM51GW8", databaseURL: "https://shop-7afd7-default-rtdb.europe-west1.firebasedatabase.app"
         };
 
-        const app = initializeApp(firebaseConfig);
-        const auth = getAuth(app);
-        const db = getDatabase(app);
-        const provider = new GoogleAuthProvider();
+        const app = initializeApp(firebaseConfig); const auth = getAuth(app); const db = getDatabase(app); const provider = new GoogleAuthProvider();
         let currentProductImages = ["", "", "", ""];
 
         onAuthStateChanged(auth, (user) => {
             if (user) {
                 document.getElementById("auth-screen").style.display = "none";
-                document.getElementById("main-screen").style.display = "block";
-                listenToProducts();
+                document.getElementById("main-screen").style.display = "block"; listenToProducts();
             } else {
-                document.getElementById("auth-screen").style.display = "flex";
-                document.getElementById("main-screen").style.display = "none";
+                document.getElementById("auth-screen").style.display = "flex"; document.getElementById("main-screen").style.display = "none";
             }
         });
 
-        window.loginWithGoogle = function() {
-            signInWithPopup(auth, provider).catch(err => alert("خطأ بالدخول: " + err.message));
-        };
+        window.loginWithGoogle = function() { signInWithPopup(auth, provider).catch(err => alert("خطأ بالدخول: " + err.message)); };
 
         window.openSaleModal = function() { 
             currentProductImages = ["", "", "", ""];
             for(let i=1; i<=4; i++) {
-                let imgHtml = document.getElementById("box-"+i).querySelector("img");
-                if(imgHtml) imgHtml.remove();
-                document.getElementById("plus-"+i).style.display = "block";
-                document.getElementById("file-"+i).value = "";
+                let imgHtml = document.getElementById("box-"+i).querySelector("img"); if(imgHtml) imgHtml.remove();
+                document.getElementById("plus-"+i).style.display = "block"; document.getElementById("file-"+i).value = "";
             }
-            document.getElementById("prod-desc").value = "";
-            document.getElementById("prod-contact").value = "";
-            document.getElementById("prod-price").value = "";
-            document.getElementById("submit-btn").disabled = false;
-            document.getElementById("submit-btn").innerText = "نشر المنتج";
+            document.getElementById("prod-desc").value = ""; document.getElementById("prod-contact").value = ""; document.getElementById("prod-price").value = "";
+            document.getElementById("submit-btn").disabled = false; document.getElementById("submit-btn").innerText = "نشر المنتج";
             document.getElementById("sale-modal").style.display = "flex"; 
         };
 
-        window.closeModal = function(id) { 
-            document.getElementById(id).style.display = "none"; 
-        };
+        window.closeModal = function(id) { document.getElementById(id).style.display = "none"; };
 
         window.handleFileSelect = function(event, num) {
             const file = event.target.files[0];
             if (file) {
                 const reader = new FileReader();
                 reader.onload = function(e) {
-                    const fromImg = new Image();
-                    fromImg.src = e.target.result;
+                    const fromImg = new Image(); fromImg.src = e.target.result;
                     fromImg.onload = function() {
-                        const toCanvas = document.createElement('canvas');
-                        const max_size = 300;
+                        const toCanvas = document.createElement('canvas'); const max_size = 300;
                         let w = fromImg.width; let h = fromImg.height;
-                        if (w > h) { 
-                            if (w > max_size) { h *= max_size / w; w = max_size; } 
-                        } else { 
-                            if (h > max_size) { w *= max_size / h; h = max_size; } 
-                        }
+                        if (w > h) { if (w > max_size) { h *= max_size / w; w = max_size; } } 
+                        else { if (h > max_size) { w *= max_size / h; h = max_size; } }
                         toCanvas.width = w; toCanvas.height = h;
                         window.pica().resize(fromImg, toCanvas).then(result => {
                             const compressedBase64 = result.toDataURL('image/jpeg', 0.5);
-                            let box = document.getElementById("box-"+num);
-                            document.getElementById("plus-"+num).style.display = "none";
+                            let box = document.getElementById("box-"+num); document.getElementById("plus-"+num).style.display = "none";
                             let oldImg = box.querySelector("img"); if(oldImg) oldImg.remove();
-                            let img = document.createElement("img"); img.src = compressedBase64;
-                            box.appendChild(img);
+                            let img = document.createElement("img"); img.src = compressedBase64; box.appendChild(img);
                             currentProductImages[num-1] = compressedBase64;
                         });
                     };
@@ -304,54 +193,29 @@
             const desc = document.getElementById("prod-desc").value.trim();
             const contact = document.getElementById("prod-contact").value.trim();
             const price = document.getElementById("prod-price").value.trim();
-            if (currentProductImages.includes("")) {
-                alert("الرجاء تعبئة جميع الصور الـ 4 المطلوبة غصب من الاستوديو أولاً!"); return;
-            }
-            if(!desc || !contact || !price) {
-                alert("الرجاء تعبئة الوصف، طريقة التواصل، والسعر أولاً!"); return;
-            }
-            const btn = document.getElementById("submit-btn");
-            btn.disabled = true; btn.innerText = "جاري النشر والمزامنة الفورية...";
+            if (currentProductImages.includes("")) { alert("الرجاء تعبئة جميع الصور الـ 4 المطلوبة غصب من الاستوديو أولاً!"); return; }
+            if(!desc || !contact || !price) { alert("الرجاء تعبئة الوصف، طريقة التواصل، والسعر أولاً!"); return; }
+            const btn = document.getElementById("submit-btn"); btn.disabled = true; btn.innerText = "جاري النشر والمزامنة الفورية...";
             push(ref(db, 'products'), {
                 mainImage: currentProductImages[0], allImages: currentProductImages,
                 description: desc, contactMethod: contact, price: price, timestamp: Date.now()
-            }).then(() => {
-                alert("تم النشر بنجاح! وسوف يظهر الآن على جميع الأجهزة الأخرى فوراً.");
-                closeModal('sale-modal');
-            }).catch(err => {
-                alert("Firebase رفضت العملية: " + err.message);
-                btn.disabled = false; btn.innerText = "نشر المنتج";
-            });
+            }).then(() => { alert("تم النشر بنجاح!"); closeModal('sale-modal'); }).catch(err => { alert("خطأ: " + err.message); btn.disabled = false; btn.innerText = "نشر المنتج"; });
         };
 
         function listenToProducts() {
             onValue(ref(db, 'products'), (snapshot) => {
-                const container = document.getElementById("products-container");
-                container.innerHTML = ""; const data = snapshot.val();
-                if(!data) {
-                    container.innerHTML = `<p style="grid-column: 1/-1; text-align: center; color: var(--stone-border);">لا توجد معروضات حالياً.</p>`; return;
-                }
+                const container = document.getElementById("products-container"); container.innerHTML = ""; const data = snapshot.val();
+                if(!data) { container.innerHTML = `<p style="grid-column: 1/-1; text-align: center; color: var(--stone-border);">لا توجد معروضات حالياً.</p>`; return; }
                 Object.keys(data).reverse().forEach(key => {
-                    const prod = data[key]; const card = document.createElement("div");
-                    card.className = "product-card";
-                    card.innerHTML = `
-                        <img src="${prod.mainImage}">
-                        <h3>${(prod.description || '').substring(0, 20)}...</h3>
-                        <div class="price">${prod.price || '0'}</div>
-                        <button class="btn-buy" id="btn-${key}">شراء</button>
-                    `;
+                    const prod = data[key]; const card = document.createElement("div"); card.className = "product-card";
+                    card.innerHTML = `<img src="${prod.mainImage}"><h3>${(prod.description || '').substring(0, 20)}...</h3><div class="price">${prod.price || '0'}</div><button class="btn-buy" id="btn-${key}">شراء</button>`;
                     container.appendChild(card);
                     document.getElementById(`btn-${key}`).addEventListener("click", () => {
                         document.getElementById("buy-desc").innerText = prod.description || '';
-                        document.getElementById("buy-price").innerText = prod.price || '';
-                        document.getElementById("buy-contact").innerText = prod.contactMethod || '';
+                        document.getElementById("buy-price").innerText = prod.price || ''; document.getElementById("buy-contact").innerText = prod.contactMethod || '';
                         const slider = document.getElementById("buy-images-container"); slider.innerHTML = "";
                         if(prod.allImages && Array.isArray(prod.allImages)) {
-                            prod.allImages.forEach(imgUrl => {
-                                if(imgUrl) {
-                                    const img = document.createElement("img"); img.src = imgUrl; slider.appendChild(img);
-                                }
-                            });
+                            prod.allImages.forEach(imgUrl => { if(imgUrl) { const img = document.createElement("img"); img.src = imgUrl; slider.appendChild(img); } });
                         }
                         document.getElementById("buy-modal").style.display = "flex";
                     });
@@ -360,5 +224,4 @@
         }
     </script>
 </body>
-                </html>
-                    
+</html>
