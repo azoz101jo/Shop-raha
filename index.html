@@ -42,7 +42,6 @@
         .product-card .price { color: #5af; font-weight: bold; margin-bottom: 10px; }
         .btn-buy { background-color: var(--stone-border); color: var(--white-text); border: 1px solid var(--gold-text); padding: 6px 12px; border-radius: 4px; cursor: pointer; width: 100%; }
         
-        /* تثبيت المودال بشكل كامل ومنع أي إغلاق تلقائي عند الكبس بالداخل أو بالخارج */
         .modal {
             display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background-color: rgba(0,0,0,0.85); z-index: 100; justify-content: center; align-items: center;
@@ -92,7 +91,7 @@
         <div class="modal-content">
             <button class="close-modal" onclick="closeModal('sale-modal')">✕</button>
             <h3 class="modal-header">إضافة معروض جديد</h3>
-            <label>صور المنتج (يجب اختيار 4 صور غصب من الاستوديو)</label>
+            <label>صور المنتج (يرجى اختيار 4 صور من الاستوديو)</label>
             <div class="image-boxes-container">
                 <input type="file" id="file-1" accept="image/*" style="display:none" onchange="handleFileSelect(event, 1)">
                 <input type="file" id="file-2" accept="image/*" style="display:none" onchange="handleFileSelect(event, 2)">
@@ -192,9 +191,9 @@
             const desc = document.getElementById("prod-desc").value.trim();
             const contact = document.getElementById("prod-contact").value.trim();
             const price = document.getElementById("prod-price").value.trim();
-            if (currentProductImages.includes("")) { alert("الرجاء تعبئة جميع الصور الـ 4 المطلوبة من الاستوديو أولاً!"); return; }
+            if (currentProductImages.includes("")) { alert("الرجاء اختيار الصور الـ 4 المطلوبة أولاً!"); return; }
             if(!desc || !contact || !price) { alert("الرجاء تعبئة الوصف، طريقة التواصل، والسعر أولاً!"); return; }
-            const btn = document.getElementById("submit-btn"); btn.disabled = true; btn.innerText = "جاري النشر والمزامنة الفورية...";
+            const btn = document.getElementById("submit-btn"); btn.disabled = true; btn.innerText = "جاري النشر...";
             push(ref(db, 'products'), {
                 mainImage: currentProductImages[0], allImages: currentProductImages,
                 description: desc, contactMethod: contact, price: price, timestamp: Date.now()
