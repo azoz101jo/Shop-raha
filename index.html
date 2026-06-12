@@ -192,7 +192,7 @@
             const desc = document.getElementById("prod-desc").value.trim();
             const contact = document.getElementById("prod-contact").value.trim();
             const price = document.getElementById("prod-price").value.trim();
-            if (currentProductImages.includes("")) { alert("الرجاء تعبئة جميع الصور الـ 4 المطلوبة غصب من الاستوديو أولاً!"); return; }
+            if (currentProductImages.includes("")) { alert("الرجاء تعبئة جميع الصور الـ 4 المطلوبة من الاستوديو أولاً!"); return; }
             if(!desc || !contact || !price) { alert("الرجاء تعبئة الوصف، طريقة التواصل، والسعر أولاً!"); return; }
             const btn = document.getElementById("submit-btn"); btn.disabled = true; btn.innerText = "جاري النشر والمزامنة الفورية...";
             push(ref(db, 'products'), {
